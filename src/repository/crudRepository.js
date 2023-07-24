@@ -2,6 +2,7 @@ class CrudRepository {
   constructor(model) {
     this.model = model;
   }
+
   //CREATE - DATA
   async create(data) {
     try {
