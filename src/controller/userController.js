@@ -22,7 +22,7 @@ export const signup = async (req, res) => {
       error: {},
       token: token,
     });
-  } catch (error) {
+  } catch (error) { 
     console.log(error);
     return res.status(501).json({
       resp: false,
