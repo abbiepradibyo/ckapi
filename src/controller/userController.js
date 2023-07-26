@@ -1,8 +1,9 @@
-import UserRepository from "../repository/userRepository.js";
+
+import UserService from "../services/userServices.js";
 import generateToken from "../utils/generateToken.js"
 import { SuccessCodes } from "../utils/error-codes.js";
 
-const userRepository = new UserRepository();
+const userServices = new UserService();
 
 export const signup = async (req, res) => {
   const registerData = {
@@ -11,9 +12,8 @@ export const signup = async (req, res) => {
     name: req.body.name,
     dob: new Date(req.body.dob),
   };
-
   try {
-    const response = await userRepository.create(registerData);
+    const response = await userServices.signup(registerData);
     const token = generateToken(response.id);
     return res.status(SuccessCodes.CREATED).json({
       resp: true,
@@ -22,53 +22,49 @@ export const signup = async (req, res) => {
       error: {},
       token: token,
     });
-  } catch (error) { 
+  } catch (error) {
     console.log(error);
     return res.status(501).json({
       resp: false,
       data: {},
       message: "Something went wrong",
       error: error,
-      token: {},
+      token: "",
     });
   }
 };
 
-
 export const login = async (req, res) => {
- 
+  const loginData = {
+    email: req.body.email
+  };
   try {
-    const response = await userRepository.findBy(req.body.email);
+    const response = await userServices.login(loginData);
     if (!response) {
       throw {
-        message: "no user found",
-      };
+        message: "Incorrect User",
+      }
     }
-
-    if (!response.comparePassword(data.password)) {
+    if (!response.comparePassword(req.body.password)) {
       throw {
-        success: false,
-        message: "incorrect email or password",
-      };
+        message: "Incorrect Password",
+      }
     }
-
     const token = generateToken(response.id);
-
     return res.status(SuccessCodes.CREATED).json({
-      success: true,
+      resp: true,
       data: response,
-      message: "Successfully logged in",
+      message: "Sign up successfull",
       error: {},
       token: token,
     });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
+    return res.status(501).json({
+      resp: false,
       data: {},
       message: "Something went wrong",
       error: error,
-      token: {}
+      token: "",
     });
   }
 };
