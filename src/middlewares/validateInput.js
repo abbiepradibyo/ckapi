@@ -17,3 +17,21 @@ export const validateSignup = (req, res, next) => {
 
   next();
 };
+
+
+export const validateOtp = (req, res, next) => {
+    
+  if (
+    !req.body.parameter
+   
+  ) {
+    return res.status(ClientErrors.BAD_REQUEST).json({
+      success: false,
+      data: {},
+      message: "Missing mandatory propertiest",
+      err: "BAD REQUEST - User Signup",
+    });
+  }
+
+  next();
+};
