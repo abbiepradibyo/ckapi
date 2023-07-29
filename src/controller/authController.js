@@ -1,25 +1,37 @@
 
 import AuthService from "../services/authServices.js";
 import { SuccessCodes } from "../utils/error-codes.js";
+import otpGenerator from "otp-generator";
 
 const authServices = new AuthService();
 
 
 
 export const sendotp = async (req, res) => {
-    const otpData = {
-        parameter: req.body.parameter
-    };
+
     try {
-        const response = await authServices.findOtp(otpData);
+        const response = await authServices.findOtp({
+            parameter: req.body.parameter,
+            expired: {
+                $gt: new Date(startDate).toISOString(),
+                $lt: new Date(endDate).toISOString()
+            }
+        });
         if (response) {
             throw {
                 message: "Error",
             }
         }
 
+        var otp = otpGenerator.generate(6, {
+            upperCaseAlphabets: false,
+            lowerCaseAlphabets: false,
+            specialChars: false,
+        });
 
-        const otp = await authServices.saveOtp(otpData);
+
+
+        const resp_otp = await authServices.saveOtp({ parameter: req.body.parameter, otp: otp });
 
         return res.status(SuccessCodes.CREATED).json({
             resp: true,

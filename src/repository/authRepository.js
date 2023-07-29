@@ -19,4 +19,4 @@ class AuthRepository extends CrudRepository {
   
 }
 
-export default UserRepository;
+export default AuthRepository;

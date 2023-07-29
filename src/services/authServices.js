@@ -1,4 +1,4 @@
-import AuthRepository from "../repository/userRepository.js";
+import AuthRepository from "../repository/authRepository.js";
 
 class AuthService {
 

@@ -1,19 +1,41 @@
 import mongoose, { Mongoose } from "mongoose";
 
+
+
 const OtpSchema = new mongoose.Schema(
     {
         parameter: {
             type: String,
             required: true,
         },
-        email: {
+        otp: {
             type: String,
-            required: true,
-            unique: true,
+
+        },
+        used: {
+            type: Boolean,
+            default: false
+
+        },
+        created: {
+            type: Date,
+            default: Date.now()
+        },
+        expired: {
+            type: Date,
+            default: Date.now() + 60 * 1000
         },
 
-    },
-    { timestamps: true }
+    }
 );
 
+
+
+OtpSchema.pre("save", function (next) {
+
+    next();
+});
+
+
+const Otp = mongoose.model("Otp", OtpSchema);
 export default Otp;
