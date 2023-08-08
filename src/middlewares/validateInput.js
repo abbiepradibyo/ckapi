@@ -8,7 +8,7 @@ export const validateSignup = (req, res, next) => {
     !req.body.dob
   ) {
     return res.status(ClientErrors.BAD_REQUEST).json({
-      success: false,
+      resp: false,
       data: {},
       message: "Missing mandatory propertiest",
       err: "BAD REQUEST - User Signup",
@@ -26,7 +26,7 @@ export const validateOtp = (req, res, next) => {
    
   ) {
     return res.status(ClientErrors.BAD_REQUEST).json({
-      success: false,
+      resp: false,
       data: {},
       message: "Missing mandatory propertiest",
       err: "BAD REQUEST - User Signup",
