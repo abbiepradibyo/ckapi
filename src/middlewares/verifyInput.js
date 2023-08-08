@@ -1,10 +1,18 @@
+
 import { ClientErrors } from "../utils/error-codes.js";
+import AuthService from "../services/authServices.js";
+
+const authServices = new AuthService();
+
+
 
 export const verifyOtp = async (req, res, next) => {
 
     try {
+
+        
         const response = await authServices.findOtp({
-            parameter: req.body.parameter,
+            parameter: req.body.email,
             expired: {
                 $gte: new Date()
             },
@@ -13,21 +21,15 @@ export const verifyOtp = async (req, res, next) => {
 
 
         });
-        if (response) {
+     
+        if (!response) {
             throw {
                 message: "Otp verified failed",
             }
         }
 
-        return res.status(SuccessCodes.OK).json({
-            resp: true,
-            data: {},
-            message: "Otp verified up successfull",
-            error: {},
-        });
-
         next();
-        
+
     } catch (error) {
         return res.status(501).json({
             resp: false,
