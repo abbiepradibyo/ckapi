@@ -1,5 +1,5 @@
 
-import { ClientErrors } from "../utils/error-codes.js";
+import { ClientErrors,ServerErrors } from "../utils/error-codes.js";
 import AuthService from "../services/authServices.js";
 
 const authServices = new AuthService();
@@ -23,18 +23,21 @@ export const verifyOtp = async (req, res, next) => {
         });
      
         if (!response) {
-            throw {
-                message: "Otp verified failed",
-            }
+            return res.status(ClientErrors.NOT_FOUND).json({
+                resp: false,
+                data: {},
+                message: "OTP not found!!",
+                error: {},
+            });
         }
 
         next();
 
     } catch (error) {
-        return res.status(501).json({
+        return res.status(ServerErrors.NOT_IMPLEMENTED).json({
             resp: false,
             data: {},
-            message: "Something went wrong",
+            message: "Error try verify OTP",
             error: error,
         });
     }

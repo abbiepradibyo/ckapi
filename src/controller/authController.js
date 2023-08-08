@@ -1,6 +1,6 @@
 
 import AuthService from "../services/authServices.js";
-import { SuccessCodes } from "../utils/error-codes.js";
+import { SuccessCodes, ClientErrors, ServerErrors } from "../utils/error-codes.js";
 import otpGenerator from "otp-generator";
 import { addTime } from "../utils/date-format.js";
 
@@ -18,15 +18,19 @@ export const sendotp = async (req, res) => {
             },
             used: false,
 
-        
+
         });
 
-        console.log(response);
+
 
         if (response) {
-            throw {
-                message: "failed,waiting 60 second",
-            }
+            return res.status(ClientErrors.REPEAT_REQUEST).json({
+                resp: true,
+                data: {},
+                message: "Failed send OTP",
+                error: "Repeat send OTP before 60s",
+            });
+
         }
 
         var otp = otpGenerator.generate(6, {
@@ -41,18 +45,18 @@ export const sendotp = async (req, res) => {
 
         return res.status(SuccessCodes.CREATED).json({
             resp: true,
-            data: "sukses insert",
-            message: "Sign up successfull",
+            data: {},
+            message: "Success Create OTP",
             error: {},
         });
 
 
 
     } catch (error) {
-        return res.status(501).json({
+        return res.status(ServerErrors.NOT_IMPLEMENTED).json({
             resp: false,
             data: {},
-            message: "Something went wrong",
+            message: "Error send OTP",
             error: error,
         });
     }

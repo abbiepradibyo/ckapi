@@ -10,7 +10,7 @@ export const validateSignup = (req, res, next) => {
     return res.status(ClientErrors.BAD_REQUEST).json({
       resp: false,
       data: {},
-      message: "Missing mandatory propertiest",
+      message: "Missing mandatory parameter",
       err: "BAD REQUEST - User Signup",
     });
   }
@@ -28,7 +28,7 @@ export const validateOtp = (req, res, next) => {
     return res.status(ClientErrors.BAD_REQUEST).json({
       success: false,
       data: {},
-      message: "Missing mandatory propertiest",
+      message: "Missing mandatory parameter",
       err: "BAD REQUEST - User Signup",
     });
   }

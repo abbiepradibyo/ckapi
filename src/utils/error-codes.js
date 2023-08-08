@@ -2,6 +2,7 @@ const ClientErrors = Object.freeze({
     BAD_REQUEST: 400,
     UNAUTHORISED: 401,
     NOT_FOUND: 404,
+    REPEAT_REQUEST:425,
   });
   
   const ServerErrors = Object.freeze({
