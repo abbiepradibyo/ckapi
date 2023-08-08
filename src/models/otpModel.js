@@ -19,14 +19,16 @@ const OtpSchema = new mongoose.Schema(
         },
         created: {
             type: Date,
-            default: Date.now()
+           
         },
         expired: {
             type: Date,
-            default: Date.now() + 60 * 1000
+           
         },
+        
 
-    }
+    },
+    
 );
 
 

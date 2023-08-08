@@ -2,6 +2,7 @@
 import AuthService from "../services/authServices.js";
 import { SuccessCodes } from "../utils/error-codes.js";
 import otpGenerator from "otp-generator";
+import { addTime } from "../utils/date-format.js";
 
 const authServices = new AuthService();
 
@@ -13,13 +14,18 @@ export const sendotp = async (req, res) => {
         const response = await authServices.findOtp({
             parameter: req.body.parameter,
             expired: {
-                $gt: new Date(startDate).toISOString(),
-                $lt: new Date(endDate).toISOString()
-            }
+                $gte: new Date()
+            },
+            used: false,
+
+        
         });
+
+        console.log(response);
+
         if (response) {
             throw {
-                message: "Error",
+                message: "failed,waiting 60 second",
             }
         }
 
@@ -31,7 +37,7 @@ export const sendotp = async (req, res) => {
 
 
 
-        const resp_otp = await authServices.saveOtp({ parameter: req.body.parameter, otp: otp });
+        const resp_otp = await authServices.saveOtp({ parameter: req.body.parameter, otp: otp, created: Date(), expired: addTime(Date(), 60) });
 
         return res.status(SuccessCodes.CREATED).json({
             resp: true,
