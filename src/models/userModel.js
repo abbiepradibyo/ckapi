@@ -8,14 +8,13 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
       match: [
-				/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-				,
-				'Please add a valid email',
-			],
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        ,
+        'Please add a valid email',
+      ],
     },
     password: {
       type: String,
-      required: true,
       min: 6,
     },
     name: {
@@ -30,7 +29,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
     followers: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-		following: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    following: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   },
   { timestamps: true }
 );
@@ -38,9 +37,13 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.pre("save", function (next) {
   const user = this;
-  const SALT = bcrypt.genSaltSync(9);
-  const encryptedPassword = bcrypt.hashSync(user.password, SALT);
-  user.password = encryptedPassword;
+  if (user.password) {
+    const SALT = bcrypt.genSaltSync(9);
+    const encryptedPassword = bcrypt.hashSync(user.password, SALT);
+    user.password = encryptedPassword;
+  } else {
+    user.password = "";
+  }
   next();
 });
 

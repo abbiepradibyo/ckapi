@@ -1,0 +1,2 @@
+1.register via social media >  input username > langsung login tanpa kode verifikasi -> ganti password via reset mengirimkan otp -> kemudian input password batru, menu ganti password tidak bisa klo login via social media, karena belum ada password lama
+2. register via from register, input data,email, username, password, dll -> kemudian send otp-> simpan 

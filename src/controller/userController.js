@@ -1,7 +1,7 @@
 
 import UserService from "../services/userServices.js";
-import generateToken from "../utils/generateToken.js"
-import { SuccessCodes } from "../utils/error-codes.js";
+import generateToken from "../utils/generate-token.js"
+import { SuccessCodes, ClientErrors, ServerErrors } from "../utils/error-codes.js";
 
 const userServices = new UserService();
 
@@ -14,22 +14,19 @@ export const signup = async (req, res) => {
   };
   try {
     const response = await userServices.signup(registerData);
-    const token = generateToken(response.id);
+
+
     return res.status(SuccessCodes.CREATED).json({
       resp: true,
       data: response,
-      message: "Sign up successfull",
-      error: {},
-      token: token,
+      message: "Success signup account",
+      token: generateToken(response.id),
     });
   } catch (error) {
-    console.log(error);
-    return res.status(501).json({
+    return res.status(ServerErrors.NOT_IMPLEMENTED).json({
       resp: false,
-      data: {},
-      message: "Something went wrong",
+      message: "Error signup account",
       error: error,
-      token: "",
     });
   }
 };
@@ -41,30 +38,28 @@ export const login = async (req, res) => {
   try {
     const response = await userServices.login(loginData);
     if (!response) {
-      throw {
+      return res.status(ClientErrors.NOT_FOUND).json({
+        resp: false,
         message: "Incorrect User",
-      }
+      });
     }
     if (!response.comparePassword(req.body.password)) {
-      throw {
+      return res.status(ClientErrors.NOT_FOUND).json({
+        resp: false,
         message: "Incorrect Password",
-      }
+      });
     }
-    const token = generateToken(response.id);
     return res.status(SuccessCodes.CREATED).json({
       resp: true,
       data: response,
       message: "Sign up successfull",
-      error: {},
-      token: token,
+      token: generateToken(response.id),
     });
   } catch (error) {
-    return res.status(501).json({
+    return res.status(ServerErrors.NOT_IMPLEMENTED).json({
       resp: false,
-      data: {},
-      message: "Something went wrong",
+      message: "Error singin account",
       error: error,
-      token: "",
     });
   }
 };

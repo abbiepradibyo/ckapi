@@ -25,9 +25,7 @@ export const verifyOtp = async (req, res, next) => {
         if (!response) {
             return res.status(ClientErrors.NOT_FOUND).json({
                 resp: false,
-                data: {},
-                message: "OTP not found!!",
-                error: {},
+                message: "Incorrect OTP",
             });
         }
 
@@ -37,7 +35,7 @@ export const verifyOtp = async (req, res, next) => {
         return res.status(ServerErrors.NOT_IMPLEMENTED).json({
             resp: false,
             data: {},
-            message: "Error try verify OTP",
+            message: "Error verify OTP",
             error: error,
         });
     }
