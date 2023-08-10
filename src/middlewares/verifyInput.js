@@ -41,3 +41,36 @@ export const verifyOtp = async (req, res, next) => {
     }
 
 };
+
+
+export const verifyUserExist = async (req, res, next) => {
+
+    try {
+
+        
+        const response = await authServices.findOtp({
+            parameter: req.body.email,
+           
+
+
+        });
+     
+        if (!response) {
+            return res.status(ClientErrors.NOT_FOUND).json({
+                resp: false,
+                message: "Incorrect OTP",
+            });
+        }
+
+        next();
+
+    } catch (error) {
+        return res.status(ServerErrors.NOT_IMPLEMENTED).json({
+            resp: false,
+            data: {},
+            message: "Error verify OTP",
+            error: error,
+        });
+    }
+
+};
