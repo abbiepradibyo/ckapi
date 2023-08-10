@@ -6,7 +6,7 @@ class UserService {
         this.userRepository = new UserRepository();
     }
 
-    async signup(data) {
+    async saveUser(data) {
         try {
             const user = await this.userRepository.create(data);
             return user;
@@ -16,7 +16,7 @@ class UserService {
         }
     }
 
-    async login(data) {
+    async findUser(data) {
         try {
             const user = await this.userRepository.findBy(data);
             return user

@@ -13,7 +13,7 @@ export const signup = async (req, res) => {
     dob: new Date(req.body.dob),
   };
   try {
-    const response = await userServices.signup(registerData);
+    const response = await userServices.saveUser(registerData);
 
 
     return res.status(SuccessCodes.CREATED).json({
@@ -36,7 +36,7 @@ export const login = async (req, res) => {
     email: req.body.email
   };
   try {
-    const response = await userServices.login(loginData);
+    const response = await userServices.findUser(loginData);
     if (!response) {
       return res.status(ClientErrors.NOT_FOUND).json({
         resp: false,
