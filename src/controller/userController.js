@@ -14,8 +14,6 @@ export const signup = async (req, res) => {
   };
   try {
     const response = await userServices.saveUser(registerData);
-
-
     return res.status(SuccessCodes.CREATED).json({
       resp: true,
       data: response,
